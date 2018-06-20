@@ -1,0 +1,15 @@
+/** Sample queries for Banana Trading business network
+*/
+
+query selectBananas {
+  description: "Select all Bananas"
+  statement:
+      SELECT org.banana.network.Banana
+}
+
+query selectBananasByOwner {
+  description: "Select all Bananas based on their owner"
+  statement:
+      SELECT org.banana.network.Banana
+          WHERE (owner==_$owner)
+}

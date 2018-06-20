@@ -1,0 +1,32 @@
+/**
+ * My banana trading network
+ */
+namespace org.banana.network
+
+asset Banana identified by bananaId {
+    o String bananaId
+    o DateTime createdAt
+    o DateTime expiredAt
+    --> Company owner
+}
+
+participant Company identified by companyId {
+    o String companyId
+    o String name
+}
+
+transaction ChangeOwnerTransaction {
+    --> Banana banana
+    --> Company newOwner
+}
+
+transaction NewBananaTransaction {
+    o String bananaId
+    o DateTime expiredAt
+}
+
+event ChangeOwnerEvent {
+    --> Banana banana
+    --> Company oldOwner
+    --> Company newOwner
+}

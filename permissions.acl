@@ -1,0 +1,80 @@
+/**
+ * Access control rules for banana-network
+ */
+
+// rule Default {
+//     description: "Allow all participants access to all resources"
+//     participant: "ANY"
+//     operation: ALL
+//     resource: "org.banana.network.*"
+//     action: ALLOW
+// }
+
+rule ReadSystem {
+  description:  "System ACL to permit read access"
+  participant: "org.banana.network.Company"
+  operation: READ
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW
+}
+
+rule SystemACL {
+  description:  "System ACL to permit all access"
+  participant: "org.hyperledger.composer.system.NetworkAdmin"
+  operation: ALL
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW
+}
+
+rule System2ACL {
+  description:  "System ACL to permit all access"
+  participant: "org.hyperledger.composer.system.NetworkAdmin"
+  operation: ALL
+  resource: "org.banana.network.*"
+  action: ALLOW
+}
+
+rule R1_ReadBanana {
+  description: "Allow all companies read banana"
+  participant: "org.banana.network.Company"
+  operation: READ
+  resource: "org.banana.network.Banana"
+  action: ALLOW
+}
+
+rule R2_CreateBanana {
+  description: "Allow only farmer create banana"
+  participant: "org.banana.network.Company#farmer"
+  operation: CREATE
+  resource: "org.banana.network.NewBananaTransaction"
+  action: ALLOW
+}
+
+rule R2_CreateBanana2
+{
+  description: "Allow only farmer CREATE a banana asset"
+  participant: "org.banana.network.Company#farmer"
+  operation: CREATE
+  resource: "org.hyperledger.composer.system.AddAsset"
+  action: ALLOW
+  // todo condition is banana asset
+}
+
+rule R2_CreateBanana3
+{
+  description: "Allow only farmer CREATE an HistorianRecord"
+  participant: "org.banana.network.Company#farmer"
+  operation: CREATE
+  resource: "org.hyperledger.composer.system.HistorianRecord"
+  action: ALLOW
+}
+
+rule R3_ManageBanana {
+  description: "Allow only farmer create and update banana"
+  participant(p): "org.banana.network.Company#farmer"
+  operation: CREATE, UPDATE
+  resource(r): "org.banana.network.Banana"
+  condition: (p.getIdentifier() == r.owner.getIdentifier())
+  action: ALLOW
+}
+

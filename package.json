@@ -1,0 +1,38 @@
+{
+  "engines": {
+    "composer": "^0.19.9"
+  },
+  "name": "banana-network",
+  "version": "0.0.11",
+  "description": "banana",
+  "scripts": {
+    "upgrade": "npm run build && (composer network install -a dist/banana-network.bna -c PeerAdmin@hlfv1 || composer network upgrade -c PeerAdmin@hlfv1 -n banana-network -V $npm_package_version)",
+    "build": "mkdir -p ./dist && composer archive create -t dir -n . -a ./dist/banana-network.bna && composer generator docs -a ./dist/banana-network.bna -o ./docs",
+    "prepublish": "npm run build",
+    "pretest": "npm run lint",
+    "lint": "eslint .",
+    "test": "nyc mocha -t 0 test/*.js && cucumber-js"
+  },
+  "keywords": [
+    "composer",
+    "composer-network"
+  ],
+  "author": "toan",
+  "email": "toancong",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "chai": "latest",
+    "chai-as-promised": "latest",
+    "composer-admin": "^0.19.9",
+    "composer-cli": "^0.19.9",
+    "composer-client": "^0.19.9",
+    "composer-common": "^0.19.9",
+    "composer-connector-embedded": "^0.19.9",
+    "composer-cucumber-steps": "^0.19.9",
+    "cucumber": "^2.2.0",
+    "eslint": "latest",
+    "mkdirp": "latest",
+    "mocha": "latest",
+    "nyc": "^12.0.2"
+  }
+}

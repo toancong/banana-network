@@ -1,0 +1,289 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>banana-network</title>
+
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" type="image/x-icon" href="/api-doc/composer/unstable/favicon.ico">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+    <link href="./assets/css/normalize.css" rel="stylesheet">
+    <link href="./assets/css/new-style.min.css" rel="stylesheet">
+    <link href="./assets/css/grid-layout.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js"></script>
+
+</head>
+
+
+<body class="">
+
+    <div class="SiteWrapper">
+        <div class="content">
+            <article class="docs-container">
+
+                 <div class="page-sidebar-grid" id="off-canvas">
+                
+                    <div class="docs-pagenav-grid">
+                        <!-- Navigation -->
+                        <nav class="navbar-docs" role="navigation">
+                            <div class="search-form">
+                            <img width="200px" src=""></img>
+                            </div>
+
+                            <!-- Brand and toggle get grouped for better mobile display -->
+                            <a class="navbar-brand" href="./index.html">
+                                <b>banana-network</b>@</a>0.0.11
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                <div class="top-nav-docs">
+                                    <a href="./index.html">Summary</a>
+                                    <a href="./assets.html">Assets</a>
+                                    <a href="./transactions.html">Transactions</a>
+                                    <a href="./participants.html">Participants</a>          
+                                    <a href="./events.html">Events</a>                          
+                                    <a href="./enums.html">Enums</a>  
+                    <a href="./queries.html">Queries</a>            
+                       <a href="./acls.html">ACLs</a>                  
+                                </div>
+                            </div>
+                        </nav>
+                          
+                           
+                          
+                           
+                    </div>
+                    
+                  <nav class="context-nav">
+                    <ul>
+                       
+
+                    
+
+                    </ul>
+
+                    </nav>
+  
+                </div>
+
+
+
+                <div class="page-content-grid">
+                    <section class="content-chunk" id="readme">
+                    <h1 id="banana-network">banana-network</h1>
+<p>banana</p>
+<h1 id="develop-business-network">develop business network</h1>
+<ol>
+<li>
+<p>build business network</p>
+<p>archive source code into bna file</p>
+<pre><code>composer archive create -t dir -n .
+</code></pre>
+<p>or</p>
+<pre><code>npm run build
+</code></pre>
+</li>
+<li>
+<p>install business network</p>
+<p>install business network to all peer, need peers admin card
+this will upload new network to all peer, but need install or upgrade to effect</p>
+<pre><code>composer network install -a dist/banana-network.bna -c PeerAdmin@hlfv1
+</code></pre>
+</li>
+<li>
+<p>run network</p>
+<p>run new network, need Business admin card
+this will create a NetworkAdmin card for run apps</p>
+<pre><code>composer network start --networkName banana-network --networkVersion 0.0.11 --card PeerAdmin@hlfv1 --networkAdmin admin --networkAdminEnrollSecret adminpw
+</code></pre>
+<p>short version</p>
+<pre><code>composer network start -n banana-network -V 0.0.11 -c PeerAdmin@hlfv1 -A admin -S adminpw
+</code></pre>
+<p>if upgrade use</p>
+<pre><code>composer network upgrade -c PeerAdmin@hlfv1 -n banana-network -V 0.0.11
+</code></pre>
+<p>ping to check a network is running</p>
+<pre><code>composer network ping --card admin@banana-network
+</code></pre>
+</li>
+<li>
+<p>Import network card for the business network administrator</p>
+<pre><code>composer card import --file admin@banana-network.card
+</code></pre>
+</li>
+<li>
+<p>start rest server</p>
+<p>run api apps, need NetworkAdmin card</p>
+<pre><code>composer-rest-server -c admin@banana-network -n never
+</code></pre>
+<p>Browse http://localhost:3000</p>
+</li>
+<li>
+<p>start client app</p>
+<p>run client app, need NetworkAdmin card</p>
+<pre><code>yo hyperledger-composer:angular
+</code></pre>
+<pre><code>cd angular-app &amp;&amp; npm start
+</code></pre>
+<p>Browse http://localhost:4200</p>
+</li>
+</ol>
+<h1 id="rapid-build-and-deploy">Rapid build and deploy</h1>
+<pre><code>```
+npm run upgrade
+```
+</code></pre>
+<h1 id="seed">seed</h1>
+<pre><code>composer participant add -c admin@banana-network -d '{&quot;$class&quot;:&quot;org.banana.network.Company&quot;, &quot;companyId&quot;:&quot;farmer&quot;, &quot;name&quot;: &quot;HAGL&quot;}'
+composer participant add -c admin@banana-network -d '{&quot;$class&quot;:&quot;org.banana.network.Company&quot;, &quot;companyId&quot;:&quot;deliverier&quot;, &quot;name&quot;: &quot;Grab&quot;}'
+composer participant add -c admin@banana-network -d '{&quot;$class&quot;:&quot;org.banana.network.Company&quot;, &quot;companyId&quot;:&quot;supermarket&quot;, &quot;name&quot;: &quot;BigC&quot;}'
+
+composer identity issue -c admin@banana-network -u HAGL -a &quot;resource:org.banana.network.Company#farmer&quot;
+composer identity issue -c admin@banana-network -u Grab -a &quot;resource:org.banana.network.Company#farmer&quot;
+composer identity issue -c admin@banana-network -u BigC -a &quot;resource:org.banana.network.Company#farmer&quot;
+
+</code></pre>
+<h1 id="notes">Notes</h1>
+<ul>
+<li>
+<p>import admin network card, this file created by start network</p>
+<pre><code>composer card import --file admin@banana-network.card
+</code></pre>
+</li>
+<li>
+<p>if you want use playground you need import the cart</p>
+</li>
+<li>
+<p>upgrade tool</p>
+<pre><code>npm install -g composer-cli composer-rest-server generator-hyperledger-composer yo composer-playground
+</code></pre>
+</li>
+<li>
+<p>Playground</p>
+<pre><code>composer-playground
+</code></pre>
+</li>
+</ul>
+<h1 id="some-errors-may-occur">Some errors may occur</h1>
+<ul>
+<li>
+<p>Error: Error trying to start business network. Error: No valid responses from any peers.
+Response from attempted peer commswas an error: Error: 2 UNKNOWN: chaincode error (status: 500, message: chaincode exists banana-network)
+-&gt; when try to start a started network</p>
+</li>
+<li>
+<p>Error: Card already exists: admin@banana-network
+-&gt; when try import an imported card</p>
+</li>
+<li>
+<p>Error: Error trying to upgrade business network. Error: No valid responses from any peers.
+Response from attempted peer commswas an error: Error: 2 UNKNOWN: chaincode error (status: 500, message: version already exists for chaincode with name 'banana-network')
+-&gt; when try upgrade an upgraded network</p>
+</li>
+<li>
+<p>Error: Card not found: admin@banana-network
+-&gt; import admin card</p>
+</li>
+<li>
+<p>Error: 2 UNKNOWN: error executing chaincode: transaction returned with failure: Error: The current identity, with the name 'admin' and the identifier '57791c6bacec1fe3ea240a5e215174f7474a60075f063238a5fff098508f6193', has not been registered
+-&gt; find way to bind identity</p>
+</li>
+</ul>
+<pre><code>composer identity issue -c admin@banana-network -f admin@banana-network.card -u admin -a &quot;resource:org.hyperledger.composer.system.NetworkAdmin#admin&quot;
+
+composer identity bind -c admin@banana-network -a &quot;resource:org.hyperledger.composer.system.NetworkAdmin#admin&quot; -e ./admin-pub.pem
+</code></pre>
+<h1 id="summary">Summary</h1>
+<h2 id="asset-definition">Asset Definition</h2>
+<table>
+<thead>
+<tr>
+<th>Namespace</th>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>org.banana.network.Banana</td>
+<td>Banana</td>
+<td>An asset named Banana</td>
+</tr>
+</tbody>
+</table>
+<h2 id="transaction-definition">Transaction Definition</h2>
+<table>
+<thead>
+<tr>
+<th>Namespace</th>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>org.banana.network.ChangeOwnerTransaction</td>
+<td>ChangeOwnerTransaction</td>
+<td>A transaction named ChangeOwnerTransaction</td>
+</tr>
+<tr>
+<td>org.banana.network.NewBananaTransaction</td>
+<td>NewBananaTransaction</td>
+<td>A transaction named NewBananaTransaction</td>
+</tr>
+</tbody>
+</table>
+<h2 id="participant-definition">Participant Definition</h2>
+<table>
+<thead>
+<tr>
+<th>Namespace</th>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>org.banana.network.Company</td>
+<td>Company</td>
+<td>An participant named Company</td>
+</tr>
+</tbody>
+</table>
+<h2 id="acl">ACL</h2>
+<h2 id="queries">Queries</h2>
+<ul>
+<li>Select all Bananas</li>
+<li>Select all Bananas based on their owner</li>
+</ul>
+ 
+                    </section>
+                </div>
+                <!-- Otherwise, have the main content fill all 12 columns... -->
+
+                <div class="PageNavigation">
+
+
+                </div>
+            </article>
+        </div>
+
+
+
+
+
+    </div>
+    <script src="./assets/js/nav.js"></script>
+</body>
+
+</html>
+
+
+
+
+
