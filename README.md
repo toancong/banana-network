@@ -72,9 +72,9 @@ banana
     Browse http://localhost:4200
 
 # Rapid build and deploy
-    ```
-    npm run upgrade
-    ```
+
+For start network (not yet start) `npm run start`
+For upgrade network (started) `npm run upgrade`
 
 # Notes
 
@@ -118,22 +118,37 @@ composer identity issue -c admin@banana-network -f admin@banana-network.card -u 
 composer identity bind -c admin@banana-network -a "resource:org.hyperledger.composer.system.NetworkAdmin#admin" -e ./admin-pub.pem
 ```
 
-# Let's try scenario
+- Clean and start new servers
+```
+composer card delete -c PeerAdmin@fabric-network
+composer card delete -c admin@banana-network
+rm -fr ~/.composer
+./stopFabric.sh
+./teardownFabric.sh
+./downloadFabric.sh
+./startFabric.sh
+./createPeerAdminCard.sh
+```
+
+# Let's try scenario examples
 ## Seed
 ```
+composer card import --file admin@banana-network.card
+
 composer participant add -c admin@banana-network -d '{"$class":"org.banana.network.Company", "companyId":"farmer", "name": "HAGL"}'
 composer participant add -c admin@banana-network -d '{"$class":"org.banana.network.Company", "companyId":"deliverier", "name": "Grab"}'
 composer participant add -c admin@banana-network -d '{"$class":"org.banana.network.Company", "companyId":"supermarket", "name": "BigC"}'
 
 composer identity issue -c admin@banana-network -u HAGL -a "resource:org.banana.network.Company#farmer"
-composer identity issue -c admin@banana-network -u Grab -a "resource:org.banana.network.Company#farmer"
-composer identity issue -c admin@banana-network -u BigC -a "resource:org.banana.network.Company#farmer"
+composer identity issue -c admin@banana-network -u Grab -a "resource:org.banana.network.Company#deliverier"
+composer identity issue -c admin@banana-network -u BigC -a "resource:org.banana.network.Company#supermarket"
 
 
 composer card import --file HAGL@banana-network.card
 composer card import --file Grab@banana-network.card
 composer card import --file BigC@banana-network.card
 ```
+
 1. Farmer create banana
 ```
 composer transaction submit --card HAGL@banana-network -d '
@@ -141,6 +156,36 @@ composer transaction submit --card HAGL@banana-network -d '
     "$class": "org.banana.network.NewBananaTransaction",
     "bananaId": "1",
     "expiredAt": "2018-06-19T18:17:34.613Z"
+}
+'
+
+composer transaction submit --card HAGL@banana-network -d '
+{
+    "$class": "org.hyperledger.composer.system.AddAsset",
+    "resources": [
+        {
+            "$class": "org.banana.network.Banana",
+            "bananaId": "2",
+            "createdAt": "2018-06-21T16:23:46.424Z",
+            "expiredAt": "2018-06-21T16:23:46.424Z",
+            "owner": "resource:org.banana.network.Company#farmer"
+        },
+        {
+            "$class": "org.banana.network.Banana",
+            "bananaId": "3",
+            "createdAt": "2018-06-21T16:23:46.424Z",
+            "expiredAt": "2018-06-21T16:23:46.424Z",
+            "owner": "resource:org.banana.network.Company#farmer"
+        },
+        {
+            "$class": "org.banana.network.Banana",
+            "bananaId": "4",
+            "createdAt": "2018-06-21T16:23:46.424Z",
+            "expiredAt": "2018-06-21T16:23:46.424Z",
+            "owner": "resource:org.banana.network.Company#farmer"
+        }
+    ],
+    "targetRegistry": "resource:org.hyperledger.composer.system.AssetRegistry#org.banana.network.Banana"
 }
 '
 ```
