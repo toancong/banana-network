@@ -4,8 +4,8 @@ Scenario 1, HAGL, can read all of the bananas,R2_ReadBanana
 Scenario 2, Grab, can read all of the bananas,R2_ReadBanana
 Scenario 19, BigC, can read all of the bananas,R2_ReadBanana
 Scenario 15, HAGL, can remove his bananas,R3_RemoveOwnBanana
-Scenario 8, HAGL, can submit a transaction of change owner for his bananas,
-Scenario 10, Grab, can submit a transaction of change owner for his bananas,
+Scenario 8, HAGL, can submit a transaction of change owner for his bananas,R4_ChangeOwnerBananaToDeliverier
+Scenario 10, Grab, can submit a transaction of change owner for his bananas,R5_ChangeOwnerBananaToSupermarket
 Scenario 7, HAGL, can update his bananas,
 Scenario 4, HAGL, cannot add bananas that Grab owns,
 Scenario 6, Grab, cannot add bananas that HAGL owns,

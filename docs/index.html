@@ -38,7 +38,7 @@
 
                             <!-- Brand and toggle get grouped for better mobile display -->
                             <a class="navbar-brand" href="./index.html">
-                                <b>banana-network</b>@</a>0.0.13
+                                <b>banana-network</b>@</a>0.0.14
                             <!-- Collect the nav links, forms, and other content for toggling -->
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <div class="top-nav-docs">
@@ -254,6 +254,28 @@ composer transaction submit --card HAGL@banana-network -d '
         }
     ],
     &quot;targetRegistry&quot;: &quot;resource:org.hyperledger.composer.system.AssetRegistry#org.banana.network.Banana&quot;
+}
+'
+</code></pre>
+<ol start="2">
+<li>Farmer change owner to Deliverier</li>
+</ol>
+<pre><code>composer transaction submit --card HAGL@banana-network -d '
+{
+    &quot;$class&quot;: &quot;org.banana.network.ChangeOwnerTransaction&quot;,
+    &quot;banana&quot;: &quot;1&quot;,
+    &quot;newOwner&quot;: &quot;deliverier&quot;
+}
+'
+</code></pre>
+<ol start="3">
+<li>Deliverier change owner to Supermarket</li>
+</ol>
+<pre><code>composer transaction submit --card Grab@banana-network -d '
+{
+    &quot;$class&quot;: &quot;org.banana.network.ChangeOwnerTransaction&quot;,
+    &quot;banana&quot;: &quot;1&quot;,
+    &quot;newOwner&quot;: &quot;supermarket&quot;
 }
 '
 </code></pre>
