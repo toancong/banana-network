@@ -38,7 +38,7 @@
 
                             <!-- Brand and toggle get grouped for better mobile display -->
                             <a class="navbar-brand" href="./index.html">
-                                <b>banana-network</b>@</a>0.0.11
+                                <b>banana-network</b>@</a>0.0.13
                             <!-- Collect the nav links, forms, and other content for toggling -->
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <div class="top-nav-docs">
@@ -120,6 +120,7 @@ this will create a NetworkAdmin card for run apps</p>
 <p>start rest server</p>
 <p>run api apps, need NetworkAdmin card</p>
 <pre><code>composer-rest-server -c admin@banana-network -n never
+#composer-rest-server -c HAGL@banana-network -n never
 </code></pre>
 <p>Browse http://localhost:3000</p>
 </li>
@@ -134,20 +135,8 @@ this will create a NetworkAdmin card for run apps</p>
 </li>
 </ol>
 <h1 id="rapid-build-and-deploy">Rapid build and deploy</h1>
-<pre><code>```
-npm run upgrade
-```
-</code></pre>
-<h1 id="seed">seed</h1>
-<pre><code>composer participant add -c admin@banana-network -d '{&quot;$class&quot;:&quot;org.banana.network.Company&quot;, &quot;companyId&quot;:&quot;farmer&quot;, &quot;name&quot;: &quot;HAGL&quot;}'
-composer participant add -c admin@banana-network -d '{&quot;$class&quot;:&quot;org.banana.network.Company&quot;, &quot;companyId&quot;:&quot;deliverier&quot;, &quot;name&quot;: &quot;Grab&quot;}'
-composer participant add -c admin@banana-network -d '{&quot;$class&quot;:&quot;org.banana.network.Company&quot;, &quot;companyId&quot;:&quot;supermarket&quot;, &quot;name&quot;: &quot;BigC&quot;}'
-
-composer identity issue -c admin@banana-network -u HAGL -a &quot;resource:org.banana.network.Company#farmer&quot;
-composer identity issue -c admin@banana-network -u Grab -a &quot;resource:org.banana.network.Company#farmer&quot;
-composer identity issue -c admin@banana-network -u BigC -a &quot;resource:org.banana.network.Company#farmer&quot;
-
-</code></pre>
+<p>For start network (not yet start) <code>npm run start</code>
+For upgrade network (started) <code>npm run upgrade</code></p>
 <h1 id="notes">Notes</h1>
 <ul>
 <li>
@@ -197,6 +186,76 @@ Response from attempted peer commswas an error: Error: 2 UNKNOWN: chaincode erro
 <pre><code>composer identity issue -c admin@banana-network -f admin@banana-network.card -u admin -a &quot;resource:org.hyperledger.composer.system.NetworkAdmin#admin&quot;
 
 composer identity bind -c admin@banana-network -a &quot;resource:org.hyperledger.composer.system.NetworkAdmin#admin&quot; -e ./admin-pub.pem
+</code></pre>
+<ul>
+<li>Clean and start new servers</li>
+</ul>
+<pre><code>composer card delete -c PeerAdmin@fabric-network
+composer card delete -c admin@banana-network
+rm -fr ~/.composer
+./stopFabric.sh
+./teardownFabric.sh
+./downloadFabric.sh
+./startFabric.sh
+./createPeerAdminCard.sh
+</code></pre>
+<h1 id="lets-try-scenario-examples">Let's try scenario examples</h1>
+<h2 id="seed">Seed</h2>
+<pre><code>composer card import --file admin@banana-network.card
+
+composer participant add -c admin@banana-network -d '{&quot;$class&quot;:&quot;org.banana.network.Company&quot;, &quot;companyId&quot;:&quot;farmer&quot;, &quot;name&quot;: &quot;HAGL&quot;}'
+composer participant add -c admin@banana-network -d '{&quot;$class&quot;:&quot;org.banana.network.Company&quot;, &quot;companyId&quot;:&quot;deliverier&quot;, &quot;name&quot;: &quot;Grab&quot;}'
+composer participant add -c admin@banana-network -d '{&quot;$class&quot;:&quot;org.banana.network.Company&quot;, &quot;companyId&quot;:&quot;supermarket&quot;, &quot;name&quot;: &quot;BigC&quot;}'
+
+composer identity issue -c admin@banana-network -u HAGL -a &quot;resource:org.banana.network.Company#farmer&quot;
+composer identity issue -c admin@banana-network -u Grab -a &quot;resource:org.banana.network.Company#deliverier&quot;
+composer identity issue -c admin@banana-network -u BigC -a &quot;resource:org.banana.network.Company#supermarket&quot;
+
+
+composer card import --file HAGL@banana-network.card
+composer card import --file Grab@banana-network.card
+composer card import --file BigC@banana-network.card
+</code></pre>
+<ol>
+<li>Farmer create banana</li>
+</ol>
+<pre><code>composer transaction submit --card HAGL@banana-network -d '
+{
+    &quot;$class&quot;: &quot;org.banana.network.NewBananaTransaction&quot;,
+    &quot;bananaId&quot;: &quot;1&quot;,
+    &quot;expiredAt&quot;: &quot;2018-06-19T18:17:34.613Z&quot;
+}
+'
+
+composer transaction submit --card HAGL@banana-network -d '
+{
+    &quot;$class&quot;: &quot;org.hyperledger.composer.system.AddAsset&quot;,
+    &quot;resources&quot;: [
+        {
+            &quot;$class&quot;: &quot;org.banana.network.Banana&quot;,
+            &quot;bananaId&quot;: &quot;2&quot;,
+            &quot;createdAt&quot;: &quot;2018-06-21T16:23:46.424Z&quot;,
+            &quot;expiredAt&quot;: &quot;2018-06-21T16:23:46.424Z&quot;,
+            &quot;owner&quot;: &quot;resource:org.banana.network.Company#farmer&quot;
+        },
+        {
+            &quot;$class&quot;: &quot;org.banana.network.Banana&quot;,
+            &quot;bananaId&quot;: &quot;3&quot;,
+            &quot;createdAt&quot;: &quot;2018-06-21T16:23:46.424Z&quot;,
+            &quot;expiredAt&quot;: &quot;2018-06-21T16:23:46.424Z&quot;,
+            &quot;owner&quot;: &quot;resource:org.banana.network.Company#farmer&quot;
+        },
+        {
+            &quot;$class&quot;: &quot;org.banana.network.Banana&quot;,
+            &quot;bananaId&quot;: &quot;4&quot;,
+            &quot;createdAt&quot;: &quot;2018-06-21T16:23:46.424Z&quot;,
+            &quot;expiredAt&quot;: &quot;2018-06-21T16:23:46.424Z&quot;,
+            &quot;owner&quot;: &quot;resource:org.banana.network.Company#farmer&quot;
+        }
+    ],
+    &quot;targetRegistry&quot;: &quot;resource:org.hyperledger.composer.system.AssetRegistry#org.banana.network.Banana&quot;
+}
+'
 </code></pre>
 <h1 id="summary">Summary</h1>
 <h2 id="asset-definition">Asset Definition</h2>

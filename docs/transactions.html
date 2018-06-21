@@ -38,7 +38,7 @@
 
                             <!-- Brand and toggle get grouped for better mobile display -->
                             <a class="navbar-brand" href="./index.html">
-                                <b>banana-network</b>@</a>0.0.11
+                                <b>banana-network</b>@</a>0.0.13
                             <!-- Collect the nav links, forms, and other content for toggling -->
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <div class="top-nav-docs">
@@ -94,13 +94,13 @@
 <pre><code class="language-javascript">async function tradeBanana(trans) {
 
     // set the new owner of the banana
-    let oldOwner = trans.banana.owner;
-    trans.banana.owner = trans.newOwner;
-    let assetRegistry = await getAssetRegistry('org.banana.network.Banana');
+    const oldOwner      = trans.banana.owner;
+    trans.banana.owner  = trans.newOwner;
+    const assetRegistry = await getAssetRegistry('org.banana.network.Banana');
 
     // emit a notification that a trans has occurred
-    let event = getFactory().newEvent('org.banana.network', 'ChangeOwnerEvent');
-    event.banana = trans.banana;
+    const event    = getFactory().newEvent('org.banana.network', 'ChangeOwnerEvent');
+    event.banana   = trans.banana;
     event.oldOwner = oldOwner;
     event.newOwner = trans.newOwner;
     emit(event);
@@ -112,12 +112,12 @@
 <h4 id="newbanana">newBanana</h4>
 <pre><code class="language-javascript">async function newBanana(trans) {
 
-    let banana = trans.bananaId;
+    const banana     = getFactory().newResource('org.banana.network', 'Banana', trans.bananaId);
     banana.createdAt = new Date();
     banana.expiredAt = trans.expiredAt;
-    banana.owner = getCurrentParticipant();
+    banana.owner     = getCurrentParticipant();
 
-    let assetRegistry = await getAssetRegistry('org.banana.network.Banana');
+    const assetRegistry = await getAssetRegistry('org.banana.network.Banana');
     // persist the state of the banana
     await assetRegistry.add(banana);
 }
