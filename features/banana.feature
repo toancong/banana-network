@@ -82,7 +82,7 @@ Feature: Sample
             | bananaId      | owner         | createdAt     | expiredAt     |
             | 1             | farmer        | 1/6/2018      | 15/6/2018     |
 
-    Scenario 8: HAGL can submit a transaction for his bananas
+    Scenario 8: HAGL can submit a transaction of change owner for his bananas
         When I use the identity HAGL
         And I submit the following transaction of type org.banana.network.ChangeOwnerTransaction
             | banana        | newOwner      |
@@ -94,14 +94,14 @@ Feature: Sample
             | banana        | oldOwner      | newOwner      |
             | 1             | farmer        | deliverier    |
 
-    Scenario 9: HAGL cannot submit a transaction for Grab's bananas
+    Scenario 9: HAGL cannot submit a transaction of change owner for Grab's bananas
         When I use the identity HAGL
         And I submit the following transaction of type org.banana.network.ChangeOwnerTransaction
             | banana        | newOwner      |
             | 1             | supermarket   |
         Then I should get an error matching /does not have .* access to resource/
 
-    Scenario 10: Grab can submit a transaction for his bananas
+    Scenario 10: Grab can submit a transaction of change owner for his bananas
         When I use the identity Grab
         And I submit the following transaction of type org.banana.network.ChangeOwnerTransaction
             | banana        | newOwner      |
@@ -113,7 +113,7 @@ Feature: Sample
             | banana        | oldOwner      | newOwner      |
             | 1             | deliverier    | supermarket    |
 
-    Scenario 11: Grab cannot submit a transaction for HAGL's bananas
+    Scenario 11: Grab cannot submit a transaction of change owner for HAGL's bananas
         When I use the identity Grab
         And I submit the following transaction of type org.banana.network.ChangeOwnerTransaction
             | banana        | newOwner      |
@@ -180,8 +180,7 @@ Feature: Sample
     Scenario 23: BigC cannot update his bananas
     Scenario 24: BigC cannot update HAGL's bananas
     Scenario 25: BigC cannot update Grab's bananas
-    Scenario 26: BigC can remove his bananas
     Scenario 27: BigC cannot remove HAGL's bananas
     Scenario 28: BigC cannot remove Grab's bananas
-    Scenario 29: BigC cannot submit a transaction for HAGL's bananas
-    Scenario 30: BigC cannot submit a transaction for Grab's bananas
+    Scenario 29: BigC cannot submit a transaction of change owner for HAGL's bananas
+    Scenario 30: BigC cannot submit a transaction of change owner for Grab's bananas
