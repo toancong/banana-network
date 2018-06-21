@@ -189,3 +189,25 @@ composer transaction submit --card HAGL@banana-network -d '
 }
 '
 ```
+
+2. Farmer change owner to Deliverier
+```
+composer transaction submit --card HAGL@banana-network -d '
+{
+    "$class": "org.banana.network.ChangeOwnerTransaction",
+    "banana": "1",
+    "newOwner": "deliverier"
+}
+'
+```
+
+3. Deliverier change owner to Supermarket
+```
+composer transaction submit --card Grab@banana-network -d '
+{
+    "$class": "org.banana.network.ChangeOwnerTransaction",
+    "banana": "1",
+    "newOwner": "supermarket"
+}
+'
+```

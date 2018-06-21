@@ -3,7 +3,7 @@
     "composer": "^0.19.9"
   },
   "name": "banana-network",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "banana",
   "scripts": {
     "start": "npm run build && composer network install -a dist/banana-network.bna -c PeerAdmin@hlfv1 && composer network start -c PeerAdmin@hlfv1 -n banana-network -A admin -S adminpw -V $npm_package_version",

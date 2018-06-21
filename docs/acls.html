@@ -38,7 +38,7 @@
 
                             <!-- Brand and toggle get grouped for better mobile display -->
                             <a class="navbar-brand" href="./index.html">
-                                <b>banana-network</b>@</a>0.0.13
+                                <b>banana-network</b>@</a>0.0.14
                             <!-- Collect the nav links, forms, and other content for toggling -->
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <div class="top-nav-docs">
@@ -86,6 +86,14 @@
                              <li><p><a href="#r3-removeownbanana2"><b>R3_RemoveOwnBanana2</b></a></p></li>  
                         
                              <li><p><a href="#r3-removeownbanana3"><b>R3_RemoveOwnBanana3</b></a></p></li>  
+                        
+                             <li><p><a href="#r4-changeownerbananatodeliverier"><b>R4_ChangeOwnerBananaToDeliverier</b></a></p></li>  
+                        
+                             <li><p><a href="#r5-changeownerbananatosupermarket"><b>R5_ChangeOwnerBananaToSupermarket</b></a></p></li>  
+                        
+                             <li><p><a href="#r5-changeownerbananatosupermarket2"><b>R5_ChangeOwnerBananaToSupermarket2</b></a></p></li>  
+                        
+                             <li><p><a href="#r5-changeownerbananatosupermarket3"><b>R5_ChangeOwnerBananaToSupermarket3</b></a></p></li>  
                         
                     
 
@@ -137,7 +145,7 @@ then my action will be  <strong>ALLOW</strong>ed</p>
 then my action will be  <strong>ALLOW</strong>ed</p>
 </blockquote>
 <h3 id="r1-createbanana">R1_CreateBanana</h3>
-<p>Allow only farmer CREATE a banana asset</p>
+<p>Allow farmer CREATE a banana asset</p>
 <ul>
 <li><em>Action</em> : ALLOW</li>
 <li><em>Noun</em> : org.hyperledger.composer.system.AddAsset</li>
@@ -149,7 +157,7 @@ then my action will be  <strong>ALLOW</strong>ed</p>
 then my action will be  <strong>ALLOW</strong>ed</p>
 </blockquote>
 <h3 id="r1-createbanana2">R1_CreateBanana2</h3>
-<p>Allow only farmer CREATE an HistorianRecord</p>
+<p>Allow farmer CREATE an HistorianRecord</p>
 <ul>
 <li><em>Action</em> : ALLOW</li>
 <li><em>Noun</em> : org.hyperledger.composer.system.HistorianRecord</li>
@@ -161,7 +169,7 @@ then my action will be  <strong>ALLOW</strong>ed</p>
 then my action will be  <strong>ALLOW</strong>ed</p>
 </blockquote>
 <h3 id="r1-createbanana3">R1_CreateBanana3</h3>
-<p>Allow only farmer create and update banana</p>
+<p>Allow farmer create and update banana</p>
 <ul>
 <li><em>Action</em> : ALLOW</li>
 <li><em>Noun</em> : org.banana.network.Banana</li>
@@ -173,7 +181,7 @@ then my action will be  <strong>ALLOW</strong>ed</p>
 then my action will be  <strong>ALLOW</strong>ed</p>
 </blockquote>
 <h3 id="r1-createbanana4">R1_CreateBanana4</h3>
-<p>Allow only farmer create banana</p>
+<p>Allow farmer create banana</p>
 <ul>
 <li><em>Action</em> : ALLOW</li>
 <li><em>Noun</em> : org.banana.network.NewBananaTransaction</li>
@@ -197,7 +205,7 @@ then my action will be  <strong>ALLOW</strong>ed</p>
 then my action will be  <strong>ALLOW</strong>ed</p>
 </blockquote>
 <h3 id="r3-removeownbanana">R3_RemoveOwnBanana</h3>
-<p>Allow only owner Remove a banana asset</p>
+<p>Allow owner Remove a banana asset</p>
 <ul>
 <li><em>Action</em> : ALLOW</li>
 <li><em>Noun</em> : org.hyperledger.composer.system.RemoveAsset</li>
@@ -209,7 +217,7 @@ then my action will be  <strong>ALLOW</strong>ed</p>
 then my action will be  <strong>ALLOW</strong>ed</p>
 </blockquote>
 <h3 id="r3-removeownbanana2">R3_RemoveOwnBanana2</h3>
-<p>Allow only farmer CREATE an HistorianRecord</p>
+<p>Allow farmer CREATE an HistorianRecord</p>
 <ul>
 <li><em>Action</em> : ALLOW</li>
 <li><em>Noun</em> : org.hyperledger.composer.system.HistorianRecord</li>
@@ -221,7 +229,7 @@ then my action will be  <strong>ALLOW</strong>ed</p>
 then my action will be  <strong>ALLOW</strong>ed</p>
 </blockquote>
 <h3 id="r3-removeownbanana3">R3_RemoveOwnBanana3</h3>
-<p>Allow only farmer create and update banana</p>
+<p>Allow farmer create and update banana</p>
 <ul>
 <li><em>Action</em> : ALLOW</li>
 <li><em>Noun</em> : org.banana.network.Banana</li>
@@ -230,6 +238,54 @@ then my action will be  <strong>ALLOW</strong>ed</p>
 </ul>
 <blockquote>
 <p>If I am a <strong>org.banana.network.Company#farmer:p</strong> and I am accessing the resource <strong>org.banana.network.Banana</strong>  and <strong>p.getIdentifier() == r.owner.getIdentifier()</strong> is true
+then my action will be  <strong>ALLOW</strong>ed</p>
+</blockquote>
+<h3 id="r4-changeownerbananatodeliverier">R4_ChangeOwnerBananaToDeliverier</h3>
+<p>Allow farmer change owner to deliverier</p>
+<ul>
+<li><em>Action</em> : ALLOW</li>
+<li><em>Noun</em> : org.banana.network.ChangeOwnerTransaction</li>
+<li><em>Participant</em> : org.banana.network.Company#farmer</li>
+<li><em>Predicate</em> : <code>true</code></li>
+</ul>
+<blockquote>
+<p>If I am a <strong>org.banana.network.Company#farmer</strong> and I am accessing the resource <strong>org.banana.network.ChangeOwnerTransaction</strong>
+then my action will be  <strong>ALLOW</strong>ed</p>
+</blockquote>
+<h3 id="r5-changeownerbananatosupermarket">R5_ChangeOwnerBananaToSupermarket</h3>
+<p>Allow deliverier change owner to supermarket</p>
+<ul>
+<li><em>Action</em> : ALLOW</li>
+<li><em>Noun</em> : org.banana.network.ChangeOwnerTransaction</li>
+<li><em>Participant</em> : org.banana.network.Company#deliverier</li>
+<li><em>Predicate</em> : <code>true</code></li>
+</ul>
+<blockquote>
+<p>If I am a <strong>org.banana.network.Company#deliverier</strong> and I am accessing the resource <strong>org.banana.network.ChangeOwnerTransaction</strong>
+then my action will be  <strong>ALLOW</strong>ed</p>
+</blockquote>
+<h3 id="r5-changeownerbananatosupermarket2">R5_ChangeOwnerBananaToSupermarket2</h3>
+<p>Allow deliverier CREATE an HistorianRecord</p>
+<ul>
+<li><em>Action</em> : ALLOW</li>
+<li><em>Noun</em> : org.hyperledger.composer.system.HistorianRecord</li>
+<li><em>Participant</em> : org.banana.network.Company#deliverier</li>
+<li><em>Predicate</em> : <code>true</code></li>
+</ul>
+<blockquote>
+<p>If I am a <strong>org.banana.network.Company#deliverier</strong> and I am accessing the resource <strong>org.hyperledger.composer.system.HistorianRecord</strong>
+then my action will be  <strong>ALLOW</strong>ed</p>
+</blockquote>
+<h3 id="r5-changeownerbananatosupermarket3">R5_ChangeOwnerBananaToSupermarket3</h3>
+<p>Allow deliverier update banana</p>
+<ul>
+<li><em>Action</em> : ALLOW</li>
+<li><em>Noun</em> : org.banana.network.Banana</li>
+<li><em>Participant</em> : org.banana.network.Company#deliverier:p</li>
+<li><em>Predicate</em> : <code>p.getIdentifier() == r.owner.getIdentifier()</code></li>
+</ul>
+<blockquote>
+<p>If I am a <strong>org.banana.network.Company#deliverier:p</strong> and I am accessing the resource <strong>org.banana.network.Banana</strong>  and <strong>p.getIdentifier() == r.owner.getIdentifier()</strong> is true
 then my action will be  <strong>ALLOW</strong>ed</p>
 </blockquote>
  
