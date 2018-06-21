@@ -34,33 +34,17 @@ rule System2ACL {
   action: ALLOW
 }
 
-rule R1_ReadBanana {
-  description: "Allow all companies read banana"
-  participant: "org.banana.network.Company"
-  operation: READ
-  resource: "org.banana.network.Banana"
-  action: ALLOW
-}
-
-rule R2_CreateBanana {
-  description: "Allow only farmer create banana"
-  participant: "org.banana.network.Company#farmer"
-  operation: CREATE
-  resource: "org.banana.network.NewBananaTransaction"
-  action: ALLOW
-}
-
-rule R2_CreateBanana2
+rule R1_CreateBanana
 {
   description: "Allow only farmer CREATE a banana asset"
   participant: "org.banana.network.Company#farmer"
   operation: CREATE
   resource: "org.hyperledger.composer.system.AddAsset"
   action: ALLOW
-  // todo condition is banana asset
+  // @todo condition is banana asset
 }
 
-rule R2_CreateBanana3
+rule R1_CreateBanana2
 {
   description: "Allow only farmer CREATE an HistorianRecord"
   participant: "org.banana.network.Company#farmer"
@@ -69,7 +53,7 @@ rule R2_CreateBanana3
   action: ALLOW
 }
 
-rule R3_ManageBanana {
+rule R1_CreateBanana3 {
   description: "Allow only farmer create and update banana"
   participant(p): "org.banana.network.Company#farmer"
   operation: CREATE, UPDATE
@@ -78,3 +62,45 @@ rule R3_ManageBanana {
   action: ALLOW
 }
 
+rule R1_CreateBanana4 {
+  description: "Allow only farmer create banana"
+  participant: "org.banana.network.Company#farmer"
+  operation: CREATE
+  resource: "org.banana.network.NewBananaTransaction"
+  action: ALLOW
+}
+
+rule R2_ReadBanana {
+  description: "Allow all companies read banana"
+  participant: "org.banana.network.Company"
+  operation: READ
+  resource: "org.banana.network.Banana"
+  action: ALLOW
+}
+
+rule R3_RemoveOwnBanana
+{
+  description: "Allow only owner Remove a banana asset"
+  participant: "org.banana.network.Company#farmer"
+  operation: CREATE
+  resource: "org.hyperledger.composer.system.RemoveAsset"
+  action: ALLOW
+}
+
+rule R3_RemoveOwnBanana2
+{
+  description: "Allow only farmer CREATE an HistorianRecord"
+  participant: "org.banana.network.Company#farmer"
+  operation: CREATE
+  resource: "org.hyperledger.composer.system.HistorianRecord"
+  action: ALLOW
+}
+
+rule R3_RemoveOwnBanana3 {
+  description: "Allow only farmer create and update banana"
+  participant(p): "org.banana.network.Company#farmer"
+  operation: DELETE
+  resource(r): "org.banana.network.Banana"
+  condition: (p.getIdentifier() == r.owner.getIdentifier())
+  action: ALLOW
+}
