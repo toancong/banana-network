@@ -1,7 +1,7 @@
 # banana-network
 
-banana
-
+Banana network architecture
+![Banana network architecture](https://github.com/toancong/banana-network/raw/master/banana-network-architecture.png "Banana network architecture")
 
 # develop business network
 
