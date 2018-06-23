@@ -1,5 +1,8 @@
-dist
 node_modules
-.DS_Store
 banana-app
+dist
+docs
+features
+.git
 .nyc_output
+test

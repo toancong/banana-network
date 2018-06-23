@@ -74,8 +74,14 @@ Banana network architecture
 # Rapid build and deploy
 
 For start network (not yet start) `npm run start`
+
 For upgrade network (started) `npm run upgrade`
 
+# Test
+
+```
+npm run test
+```
 # Notes
 
 - import admin network card, this file created by start network
