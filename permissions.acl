@@ -56,7 +56,7 @@ rule R1_CreateBanana2
 rule R1_CreateBanana3 {
   description: "Allow farmer create and update banana"
   participant(p): "org.banana.network.Company#farmer"
-  operation: CREATE, UPDATE
+  operation: CREATE
   resource(r): "org.banana.network.Banana"
   condition: (p.getIdentifier() == r.owner.getIdentifier())
   action: ALLOW
@@ -113,6 +113,15 @@ rule R4_ChangeOwnerBananaToDeliverier {
   action: ALLOW
 }
 
+rule R4_ChangeOwnerBananaToDeliverier2 {
+  description: "Allow update banana"
+  participant(p): "org.banana.network.Company#farmer"
+  operation: UPDATE
+  resource(r): "org.banana.network.Banana"
+  condition: (p.getIdentifier() == r.owner.getIdentifier())
+  action: ALLOW
+}
+
 rule R5_ChangeOwnerBananaToSupermarket {
   description: "Allow deliverier change owner to supermarket"
   participant: "org.banana.network.Company#deliverier"
@@ -136,5 +145,15 @@ rule R5_ChangeOwnerBananaToSupermarket3 {
   operation: UPDATE
   resource(r): "org.banana.network.Banana"
   condition: (p.getIdentifier() == r.owner.getIdentifier())
+  action: ALLOW
+}
+
+rule R7_UpdateOwnBanana
+{
+  description: "Allow owner farmer update a banana asset"
+  participant(p): "org.banana.network.Company#farmer"
+  operation: CREATE
+  resource(r): "org.hyperledger.composer.system.UpdateAsset"
+  condition: (r.resources.every(function (i) { return i.owner.getIdentifier() == 'farmer'; }))
   action: ALLOW
 }
