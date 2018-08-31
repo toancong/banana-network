@@ -89,11 +89,15 @@
                         
                              <li><p><a href="#r4-changeownerbananatodeliverier"><b>R4_ChangeOwnerBananaToDeliverier</b></a></p></li>  
                         
+                             <li><p><a href="#r4-changeownerbananatodeliverier2"><b>R4_ChangeOwnerBananaToDeliverier2</b></a></p></li>  
+                        
                              <li><p><a href="#r5-changeownerbananatosupermarket"><b>R5_ChangeOwnerBananaToSupermarket</b></a></p></li>  
                         
                              <li><p><a href="#r5-changeownerbananatosupermarket2"><b>R5_ChangeOwnerBananaToSupermarket2</b></a></p></li>  
                         
                              <li><p><a href="#r5-changeownerbananatosupermarket3"><b>R5_ChangeOwnerBananaToSupermarket3</b></a></p></li>  
+                        
+                             <li><p><a href="#r7-updateownbanana"><b>R7_UpdateOwnBanana</b></a></p></li>  
                         
                     
 
@@ -252,6 +256,18 @@ then my action will be  <strong>ALLOW</strong>ed</p>
 <p>If I am a <strong>org.banana.network.Company#farmer</strong> and I am accessing the resource <strong>org.banana.network.ChangeOwnerTransaction</strong>
 then my action will be  <strong>ALLOW</strong>ed</p>
 </blockquote>
+<h3 id="r4-changeownerbananatodeliverier2">R4_ChangeOwnerBananaToDeliverier2</h3>
+<p>Allow update banana</p>
+<ul>
+<li><em>Action</em> : ALLOW</li>
+<li><em>Noun</em> : org.banana.network.Banana</li>
+<li><em>Participant</em> : org.banana.network.Company#farmer:p</li>
+<li><em>Predicate</em> : <code>p.getIdentifier() == r.owner.getIdentifier()</code></li>
+</ul>
+<blockquote>
+<p>If I am a <strong>org.banana.network.Company#farmer:p</strong> and I am accessing the resource <strong>org.banana.network.Banana</strong>  and <strong>p.getIdentifier() == r.owner.getIdentifier()</strong> is true
+then my action will be  <strong>ALLOW</strong>ed</p>
+</blockquote>
 <h3 id="r5-changeownerbananatosupermarket">R5_ChangeOwnerBananaToSupermarket</h3>
 <p>Allow deliverier change owner to supermarket</p>
 <ul>
@@ -286,6 +302,18 @@ then my action will be  <strong>ALLOW</strong>ed</p>
 </ul>
 <blockquote>
 <p>If I am a <strong>org.banana.network.Company#deliverier:p</strong> and I am accessing the resource <strong>org.banana.network.Banana</strong>  and <strong>p.getIdentifier() == r.owner.getIdentifier()</strong> is true
+then my action will be  <strong>ALLOW</strong>ed</p>
+</blockquote>
+<h3 id="r7-updateownbanana">R7_UpdateOwnBanana</h3>
+<p>Allow owner farmer update a banana asset</p>
+<ul>
+<li><em>Action</em> : ALLOW</li>
+<li><em>Noun</em> : org.hyperledger.composer.system.UpdateAsset</li>
+<li><em>Participant</em> : org.banana.network.Company#farmer:p</li>
+<li><em>Predicate</em> : <code>r.resources.every(function (i) { return i.owner.getIdentifier() == 'farmer'; })</code></li>
+</ul>
+<blockquote>
+<p>If I am a <strong>org.banana.network.Company#farmer:p</strong> and I am accessing the resource <strong>org.hyperledger.composer.system.UpdateAsset</strong>  and <strong>r.resources.every(function (i) { return i.owner.getIdentifier() == 'farmer'; })</strong> is true
 then my action will be  <strong>ALLOW</strong>ed</p>
 </blockquote>
  

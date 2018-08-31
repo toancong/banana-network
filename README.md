@@ -51,10 +51,13 @@ Banana network architecture
     ```
 5. start rest server
 
-    run api apps, need NetworkAdmin card
+    run api apps, need a card which require minimum permission to generate api
     ```
     composer-rest-server -c admin@banana-network -n never
-    #composer-rest-server -c HAGL@banana-network -n never
+    ```
+    or
+    ```
+    source .env && composer-rest-server
     ```
 
     Browse http://localhost:3000
@@ -101,33 +104,8 @@ npm run test
     composer-playground
     ```
 
-# Some errors may occur
-- Error: Error trying to start business network. Error: No valid responses from any peers.
-Response from attempted peer commswas an error: Error: 2 UNKNOWN: chaincode error (status: 500, message: chaincode exists banana-network)
--> when try to start a started network
-
-- Error: Card already exists: admin@banana-network
--> when try import an imported card
-
-- Error: Error trying to upgrade business network. Error: No valid responses from any peers.
-Response from attempted peer commswas an error: Error: 2 UNKNOWN: chaincode error (status: 500, message: version already exists for chaincode with name 'banana-network')
--> when try upgrade an upgraded network
-
-- Error: Card not found: admin@banana-network
--> import admin card
-
-- Error: 2 UNKNOWN: error executing chaincode: transaction returned with failure: Error: The current identity, with the name 'admin' and the identifier '57791c6bacec1fe3ea240a5e215174f7474a60075f063238a5fff098508f6193', has not been registered
--> find way to bind identity
-```
-composer identity issue -c admin@banana-network -f admin@banana-network.card -u admin -a "resource:org.hyperledger.composer.system.NetworkAdmin#admin"
-
-composer identity bind -c admin@banana-network -a "resource:org.hyperledger.composer.system.NetworkAdmin#admin" -e ./admin-pub.pem
-```
-
 - Clean and start new servers
 ```
-composer card delete -c PeerAdmin@fabric-network
-composer card delete -c admin@banana-network
 rm -fr ~/.composer
 ./stopFabric.sh
 ./teardownFabric.sh
@@ -135,6 +113,33 @@ rm -fr ~/.composer
 ./startFabric.sh
 ./createPeerAdminCard.sh
 ```
+
+# Some errors may occur
+- Error: Error trying to start business network. Error: No valid responses from any peers.
+Response from attempted peer commswas an error: Error: 2 UNKNOWN: chaincode error (status: 500, message: chaincode exists banana-network)
+-> cause: when try to start a started network
+-> solve: use upgrade command instead
+
+- Error: Card already exists: admin@banana-network
+-> cause: when try import an imported card
+-> solve: ensure don't re-import the card
+
+- Error: Error trying to upgrade business network. Error: No valid responses from any peers.
+Response from attempted peer commswas an error: Error: 2 UNKNOWN: chaincode error (status: 500, message: version already exists for chaincode with name 'banana-network')
+-> cause: when try upgrade an upgraded network
+-> solve: ensure upgrade properly network's version
+
+- Error: Card not found: admin@banana-network
+-> cause: not yet import admin card
+-> solve: use import command
+
+- Error: 2 UNKNOWN: error executing chaincode: transaction returned with failure: Error: The current identity, with the name 'admin' and the identifier '57791c6bacec1fe3ea240a5e215174f7474a60075f063238a5fff098508f6193', has not been registered
+-> cause: import a wrong card
+-> issue: correct card
+
+- Error: Error trying login and get user Context. Error: Error trying to enroll user or load channel configuration. Error: Enrollment failed with errors [[{"code":20,"message":"Authorization failure"}]] and error in CA "POST /api/v1/enroll 401 24 "Login failure: The identity UserId has already enrolled 1 times, it has reached its maximum enrollment allowance" or card imported sucessfully even run delete and import again
+-> cause: a card imported but enrolled before or import a wrong card
+-> solve: run delete card and import right one again
 
 # Let's try scenario examples
 ## Seed
@@ -153,10 +158,19 @@ composer identity issue -c admin@banana-network -u BigC -a "resource:org.banana.
 composer card import --file HAGL@banana-network.card
 composer card import --file Grab@banana-network.card
 composer card import --file BigC@banana-network.card
+
+composer network ping --card HAGL@banana-network
+composer network ping --card Grab@banana-network
+composer network ping --card BigC@banana-network
+
+composer card export -f HAGL.card -c HAGL@banana-network
+composer card export -f Grab.card -c Grab@banana-network
+composer card export -f BigC.card -c BigC@banana-network
+composer card export -f admin.card -c admin@banana-network
 ```
 
-1. Farmer create banana
 ```
+# 1. Farmer create banana
 composer transaction submit --card HAGL@banana-network -d '
 {
     "$class": "org.banana.network.NewBananaTransaction",
@@ -194,10 +208,8 @@ composer transaction submit --card HAGL@banana-network -d '
     "targetRegistry": "resource:org.hyperledger.composer.system.AssetRegistry#org.banana.network.Banana"
 }
 '
-```
 
-2. Farmer change owner to Deliverier
-```
+# 2. Farmer change owner to Deliverier
 composer transaction submit --card HAGL@banana-network -d '
 {
     "$class": "org.banana.network.ChangeOwnerTransaction",
@@ -205,10 +217,8 @@ composer transaction submit --card HAGL@banana-network -d '
     "newOwner": "deliverier"
 }
 '
-```
 
-3. Deliverier change owner to Supermarket
-```
+#3. Deliverier change owner to Supermarket
 composer transaction submit --card Grab@banana-network -d '
 {
     "$class": "org.banana.network.ChangeOwnerTransaction",

@@ -6,8 +6,8 @@
   "version": "0.0.14",
   "description": "banana",
   "scripts": {
-    "start": "npm run build && composer network install -a dist/banana-network.bna -c PeerAdmin@hlfv1 && composer network start -c PeerAdmin@hlfv1 -n banana-network -A admin -S adminpw -V $npm_package_version",
-    "upgrade": "npm run build && composer network install -a dist/banana-network.bna -c PeerAdmin@hlfv1 && composer network upgrade -c PeerAdmin@hlfv1 -n banana-network -V $npm_package_version",
+    "start": "npm run build && composer network install -a dist/banana-network.bna -c PeerAdmin@hlfv1 && composer network start -c PeerAdmin@hlfv1 -n banana-network -A admin -S adminpw -V $npm_package_version && composer card import --file admin@banana-network.card && composer network ping --card admin@banana-network",
+    "upgrade": "npm run build && composer network install -a dist/banana-network.bna -c PeerAdmin@hlfv1 && composer network upgrade -c PeerAdmin@hlfv1 -n banana-network -V $npm_package_version && composer network ping --card admin@banana-network",
     "build": "mkdir -p ./dist && composer archive create -t dir -n . -a ./dist/banana-network.bna && composer generator docs -a ./dist/banana-network.bna -o ./docs",
     "prepublish": "npm run build",
     "pretest": "npm run lint",
